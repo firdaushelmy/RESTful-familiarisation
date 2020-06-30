@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
-
+require('dotenv').config()
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -10,7 +10,50 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 const port = process.env.PORT || 3000;
+const MONGO_URL = process.env.MONGO_URL
+mongoose.connect(`${MONGO_URL}`, { useNewUrlParser: true, useUnifiedTopology: true })
+
+const articlesSchema = ({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+})
+
+const listsSchema = {
+  name: { type: String, required: true },
+  articles: [articlesSchema],
+}
+
+const Article = mongoose.model('Article', articlesSchema);
+const List = mongoose.model('List', listsSchema);
+
+app.get('/', function (req, res) {
+  Article.find({}, function (err, result) {
+    if (result.length === 0) {
+      List.create({
+        name: 'Article List',
+      }, function (err, list) {
+        if (err) {
+          return handleError(err);
+        }
+      })
+      Article.create({
+        title: 'testing one two three',
+        content: 'pewpewpew'
+      }, function (err, article) {
+        if (err) {
+          return handleError(err);
+        }
+      })
+      res.redirect('/');
+    }
+    if (result.length === !0) {
+      res.render('home', { title: result.title, content: result.content });
+    }
+  })
+})
 
 app.listen(port, function () {
   console.log(`server is running on ${port}`)
 });
+
+// connect database
