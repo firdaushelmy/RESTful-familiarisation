@@ -1,4 +1,6 @@
 <H1>HOME</H1>
 
-<p><%= title %></p>
-<p><%= content %></p>
+<% articles.forEach(function(article){%>
+<p><%=article.title%></p>
+<p><%= article.content %></p>
+<%}) %>
