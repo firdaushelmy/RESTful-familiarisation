@@ -53,8 +53,11 @@ app.get('/articles', function (req, res) {
 })
 
 app.post('/articles', function (req, res) {
-  console.log(req.body.title);
-  console.log(req.body.content);
+  const article = new Article({
+    title: req.body.title,
+    content: req.body.content,
+  })
+  article.save()
 })
 
 app.get('/new', function (req, res) {
