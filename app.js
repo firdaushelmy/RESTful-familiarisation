@@ -47,7 +47,7 @@ app.get('/', function (req, res) {
       res.redirect('/');
     }
     if (result.length !== 0) {
-      res.render('home', { articles: result });
+      res.send(result);
     }
   })
 })
