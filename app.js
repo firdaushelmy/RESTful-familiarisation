@@ -57,7 +57,13 @@ app.post('/articles', function (req, res) {
     title: req.body.title,
     content: req.body.content,
   })
-  article.save()
+  article.save(function (err) {
+    if (!err) {
+      console.log('successfully added entry')
+      return
+    }
+    console.log(err)
+  })
 })
 
 app.get('/new', function (req, res) {
