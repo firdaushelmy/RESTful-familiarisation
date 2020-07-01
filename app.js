@@ -52,6 +52,10 @@ app.get('/', function (req, res) {
   })
 })
 
+app.get('/new', function (req, res) {
+  res.render('addEntry')
+})
+
 app.listen(port, function () {
   console.log(`server is running on ${port}`)
 });
