@@ -26,7 +26,7 @@ const listsSchema = {
 const Article = mongoose.model('Article', articlesSchema);
 const List = mongoose.model('List', listsSchema);
 
-app.get('/', function (req, res) {
+app.get('/articles', function (req, res) {
   Article.find({}, function (err, result) {
     if (result.length === 0) {
       List.create({
@@ -50,6 +50,11 @@ app.get('/', function (req, res) {
       res.send(result);
     }
   })
+})
+
+app.post('/articles', function (req, res) {
+  console.log(req.body.title);
+  console.log(req.body.content);
 })
 
 app.get('/new', function (req, res) {
