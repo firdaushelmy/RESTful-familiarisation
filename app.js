@@ -60,9 +60,19 @@ app.post('/articles', function (req, res) {
   article.save(function (err) {
     if (!err) {
       console.log('successfully added entry')
-      return
+      return;
     }
     console.log(err)
+  })
+})
+
+app.delete('/articles', function (req, res) {
+  Article.deleteMany(function (err) {
+    if (!err) {
+      console.log('Database wiped clean');
+      return;
+    }
+    console.log(err);
   })
 })
 
@@ -70,8 +80,8 @@ app.get('/new', function (req, res) {
   res.render('addEntry')
 })
 
+
+
 app.listen(port, function () {
   console.log(`server is running on ${port}`)
 });
-
-// connect database
