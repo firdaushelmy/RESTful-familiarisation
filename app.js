@@ -26,55 +26,64 @@ const listsSchema = {
 const Article = mongoose.model('Article', articlesSchema);
 const List = mongoose.model('List', listsSchema);
 
-app.get('/articles', function (req, res) {
-  Article.find({}, function (err, result) {
-    if (result.length === 0) {
-      List.create({
-        name: 'Article List',
-      }, function (err, list) {
-        if (err) {
-          return handleError(err);
-        }
-      })
-      Article.create({
-        title: 'testing one two three',
-        content: 'pewpewpew'
-      }, function (err, article) {
-        if (err) {
-          return handleError(err);
-        }
-      })
-      res.redirect('/');
-    }
-    if (result.length !== 0) {
-      res.send(result);
-    }
-  })
-})
+app.route('/articles')
 
-app.post('/articles', function (req, res) {
-  const article = new Article({
-    title: req.body.title,
-    content: req.body.content,
+  .get(function (req, res) {
+    Article.find({}, function (err, result) {
+      if (result.length === 0) {
+        List.create({
+          name: 'Article List',
+        }, function (err, list) {
+          if (err) {
+            return handleError(err);
+          }
+        })
+        Article.create({
+          title: 'testing one two three',
+          content: 'pewpewpew'
+        }, function (err, article) {
+          if (err) {
+            return handleError(err);
+          }
+        })
+        res.redirect('/');
+      }
+      if (result.length !== 0) {
+        res.send(result);
+      }
+    });
   })
-  article.save(function (err) {
-    if (!err) {
-      console.log('successfully added entry')
-      return;
-    }
-    console.log(err)
-  })
-})
 
-app.delete('/articles', function (req, res) {
-  Article.deleteMany(function (err) {
-    if (!err) {
-      console.log('Database wiped clean');
-      return;
-    }
-    console.log(err);
+  .post(function (req, res) {
+    const article = new Article({
+      title: req.body.title,
+      content: req.body.content,
+    })
+    article.save(function (err) {
+      if (!err) {
+        console.log('successfully added entry')
+        return;
+      }
+      console.log(err)
+    });
   })
-})
+
+  .delete(function (req, res) {
+    Article.deleteMany(function (err) {
+      if (!err) {
+        console.log('Database wiped clean');
+        return;
+      }
+      console.log(err);
+    })
+    List.deleteMany(function (err) {
+      if (!err) {
+        console.log('list is Wiped');
+        return;
+      }
+      console.log(err);
+    })
+  });
 
 app.get('/new', function (req, res) {
   res.render('addEntry')
