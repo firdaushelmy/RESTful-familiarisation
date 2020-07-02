@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const { get } = require('http');
 require('dotenv').config()
 const app = express();
 
@@ -82,6 +83,17 @@ app.route('/articles')
         return;
       }
       console.log(err);
+    })
+  });
+
+app.route('/articles/:articleTitle')
+
+  .get(function (req, res) {
+    Article.findOne({ title: req.params.articleTitle }, function (err, foundArticle) {
+      if (foundArticle) {
+        res.send(foundArticle);
+        return;
+      } console.log('entry not found')
     })
   });
 
