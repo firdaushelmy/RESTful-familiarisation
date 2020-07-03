@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
-const { get } = require('http');
 require('dotenv').config()
 const app = express();
 
@@ -134,10 +133,8 @@ app.route('/articles/:articleTitle')
       })
   });
 
-app.get('/new', function (req, res) {
-  res.render('addEntry')
-})
-
 app.listen(port, function () {
   console.log(`server is running on ${port}`)
 });
+
+
