@@ -95,6 +95,21 @@ app.route('/articles/:articleTitle')
         return;
       } console.log('entry not found')
     })
+  })
+
+  .put(function (req, res) {
+    Article.update({ title: req.params.articleTitle }, {
+      title: req.body.title,
+      content: req.body.content,
+    },
+      { overwrite: true },
+      function (err) {
+        if (!err) {
+          res.send('entry updated successfully');
+          return;
+        }
+        console.log(err);
+      })
   });
 
 app.get('/new', function (req, res) {
