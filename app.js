@@ -119,7 +119,18 @@ app.route('/articles/:articleTitle')
         if (!err) {
           res.send('successfully updated fields');
           return;
-        } console.log(err)
+        } console.log(err);
+      })
+  })
+
+  .delete(function (req, res) {
+    Article.deleteOne(
+      { title: req.params.articleTitle },
+      function (err,) {
+        if (!err) {
+          res.send('entry successfully deleted');
+          return;
+        } console.log(err);
       })
   });
 
