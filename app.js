@@ -98,10 +98,9 @@ app.route('/articles/:articleTitle')
   })
 
   .put(function (req, res) {
-    Article.update({ title: req.params.articleTitle }, {
-      title: req.body.title,
-      content: req.body.content,
-    },
+    Article.update(
+      { title: req.params.articleTitle },
+      { title: req.body.title, content: req.body.content, },
       { overwrite: true },
       function (err) {
         if (!err) {
@@ -110,13 +109,23 @@ app.route('/articles/:articleTitle')
         }
         console.log(err);
       })
+  })
+
+  .patch(function (req, res) {
+    Article.update(
+      { title: req.params.articleTitle },
+      { $set: req.body },
+      function (err) {
+        if (!err) {
+          res.send('successfully updated fields');
+          return;
+        } console.log(err)
+      })
   });
 
 app.get('/new', function (req, res) {
   res.render('addEntry')
 })
-
-
 
 app.listen(port, function () {
   console.log(`server is running on ${port}`)
